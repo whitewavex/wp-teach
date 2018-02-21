@@ -11,7 +11,7 @@
                             <?php if ( $posts->have_posts() ) :  while ( $posts->have_posts() ) : $posts->the_post(); ?>
                                
                                 <li class="widget__item">
-                                    <a href="#<?php echo get_post_meta($post->ID, 'id', true); ?>" class="widget__link"><?php the_title(); ?></a>
+                                    <a href="<?php the_permalink(); ?>" class="widget__link link-training"><?php the_title(); ?></a>
                                 </li>
                                 
                             <?php endwhile; ?>

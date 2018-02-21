@@ -82,15 +82,46 @@ function our_team() {
     register_post_type( 'team', $args );
 }
 
-// SIDEBAR
+// AJAX LOAD TRAININGS
 
-//register_sidebar(array(
-//	'name'          => 'Бічна колонка',
-//    'description'   => 'Місце для розташування віджетів',
-//	'id'            => 'sidebar',
-//	'before_widget' => '<div class="widget">',
-//	'after_widget'  => '</div>',
-//	'before_title'  => '<h4 class="widget__header">',
-//	'after_title'   => '</h4>',));
+add_action('wp_ajax_get_training', 'ajax_show_selected_post');
+add_action('wp_ajax_nopriv_get_training', 'ajax_show_selected_post');
+
+function ajax_show_selected_post() {
+    $link = !empty( $_POST['link'] ) ? esc_attr( $_POST['link'] ) : false;
+    $post_ID = url_to_postid( $link );
+    
+    if( ! $post_ID ) {
+        die( 'Запис не знайдено');
+    }
+    
+    query_posts( array(
+        'p' => $post_ID
+    ));
+?>
+   
+    <?php while ( have_posts() ) : the_post(); ?>
+    <div class="lessons" id="<?php echo get_post_meta($post->ID, 'id', true); ?>">
+        <h4 class="lessons__header"><?php the_title(); ?></h4>
+        <div class="lessons__content">
+            <?php the_content(); ?>
+        </div>
+    </div>
+    <?php endwhile; ?>
+    
+<?php
+    wp_die();
+}
+
+add_action('wp_enqueue_scripts', 'my_assets');
+
+function my_assets() {
+    
+    wp_enqueue_script('ajax-trainings', get_template_directory_uri() . '/js/ajax-traininigs.js', array(), null, true);
+    
+    wp_localize_script('ajax-trainings', 'myTrainings', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+    ));
+}
 
 ?>

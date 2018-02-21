@@ -15,18 +15,20 @@
                         <?php $posts = new WP_Query( array(
                             'category_name' => 'trainings',
                             'post_type' => 'post',
-                            'order' => 'ASC'
+                            'order' => 'DESC'
                         )); ?>
                         <?php if ( $posts->have_posts() ) :  while ( $posts->have_posts() ) : $posts->the_post(); ?>
+                        <?php global $more;
+                                     $more = 1; 
+                        ?>
+                        <?php endwhile; ?>
+                        <?php endif; ?>  
                             <div class="lessons" id="<?php echo get_post_meta($post->ID, 'id', true); ?>">
                                 <h4 class="lessons__header"><?php the_title(); ?></h4>
                                 <div class="lessons__content">
-                                    <?php the_content(''); ?>
+                                    <?php the_content(); ?>
                                 </div>
-                                <a href="<?php the_permalink(); ?>" class="button public__button">Прочитати</a>
-                            </div>
-                        <?php endwhile; ?>
-                        <?php endif; ?>                      
+                            </div>                
 <!--
                         <div class="comments main__comments">
                             <h4 class="comments__header">Оставить комментарий</h4>
