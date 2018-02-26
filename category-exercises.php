@@ -10,6 +10,12 @@
             </div>
             
             <?php if (have_posts()) :  while (have_posts()) : the_post(); ?>
+            
+            <?php 
+                global $more;
+                $more = 1;
+            ?>
+            
             <div class="card article articles__item">
                 <div class="card-header article__header" id="<?php echo get_post_meta($post->ID, 'id', true); ?>">
                     <h5 class="mb-0">
