@@ -124,4 +124,38 @@ function my_assets() {
     ));
 }
 
+// MY COMMENTS
+
+    add_filter('comment_reply_link', 'replace_reply_link_class');
+
+    function replace_reply_link_class($class){
+        $class = str_replace("class='comment-reply-link", "class='button comment__button", $class);
+        return $class;
+    }
+
+  function my_comments($comment, $args, $depth){
+    $GLOBALS['comment'] = $comment; ?>
+      <div <?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
+        <div class="row" id="comment-<?php comment_ID(); ?>">
+          <div class="comment-author vcard col-lg-1 col-sm-2">
+            <?php echo get_avatar($comment,$size='64',$default='<path_to_url>'); ?>
+  
+            <?php //printf(__('<cite class="fn">%s</cite>'), get_comment_author_link()) ?>
+          </div>
+          <?php if ($comment->comment_approved == '0') : ?>
+            <em><?php _e('Your comment is awaiting moderation.') ?></em>
+            <br />
+          <?php endif; ?>
+          <div class="col-lg-11 col-sm-10">
+          <?php printf(__('<h3 class="comment__header fn">%s</h3>'), get_comment_author_link()) ?>
+          
+          <?php comment_text() ?>
+          
+          <div class="reply">
+            <?php comment_reply_link(array('depth' => $depth, 'max_depth' => $args['max_depth'])) ?>
+          </div>
+          </div>
+        </div>
+  <?php }
+
 ?>
