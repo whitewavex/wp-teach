@@ -22,7 +22,7 @@
                                 <div class="post__info">
                                     <h4 class="post__header"><?php the_title(); ?></h4>
                                     <a data-fancybox data-src="#<?php echo get_post_meta($post->ID, 'id', true); ?>" href="javascript:;" class="button button_info post__button">Психолого-педагогічний ефект</a>
-                                    <a data-fancybox href="<?php echo get_post_meta($post->ID, 'video', true); ?>" class="button button_play post__button">Перейти до перегляду</a>
+                                    <a data-fancybox data-type="iframe" data-src="<?php echo get_post_meta($post->ID, 'video', true); ?>" href="javascript:;" class="button button_play post__button">Перейти до перегляду</a>
                                     <a href="<?php echo get_post_meta($post->ID, 'download', true); ?>" class="button post__button">Завантажити</a>
                                 </div>
                                 <div class="content" style="display: none;" id="<?php echo get_post_meta($post->ID, 'id', true); ?>">
