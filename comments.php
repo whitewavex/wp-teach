@@ -88,7 +88,8 @@
                 'callback' => 'my_comments',
                 'reply_text' => 'Відповісти',
                 'avatar_size' => 64,
-                'reverse_top_level' => true
+                'reverse_top_level' => true,
+                'type' => 'comment'
             ); ?>
             <?php wp_list_comments( $args ); ?>
         </div>

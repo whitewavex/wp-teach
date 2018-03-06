@@ -26,28 +26,23 @@
                             </div>
                         </div>
                     <?php endwhile; ?>
-                    <?php endif; ?>
                 </div>
+                <?php global $wp_query; ?>
+                <?php if (  $wp_query->max_num_pages > 1 ) : ?>
+                    <script>
+                        var true_posts = '<?php echo serialize($wp_query->query_vars); ?>';
+                        var current_page = <?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>;
+                        var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
+                    </script>
+                    <div class="load container">
+                        <a href="#" id="load-presentations" class="button load__button">
+                            <span class="load__text">Завантажити ще</span>
+                            <i class="load__icon fa fa-refresh" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                <?php endif; ?>
+                <?php endif; ?>
             </div>
-        </div>
-        <div class="load container">
-           
-            <?php
-                $args = array(
-                    'show_all'     => false, // показаны все страницы участвующие в пагинации
-                    'end_size'     => 1,     // количество страниц на концах
-                    'mid_size'     => 1,     // количество страниц вокруг текущей
-                    'prev_next'    => true,  // выводить ли боковые ссылки "предыдущая/следующая страница".
-                    'prev_text'    => __('Попередня сторінка'),
-                    'next_text'    => __('Наступна сторінка'),
-                    'add_args'     => false, // Массив аргументов (переменных запроса), которые нужно добавить к ссылкам.
-                    'add_fragment' => '',     // Текст который добавиться ко всем ссылкам.
-                    'screen_reader_text' =>  ' '
-                );
-                the_posts_pagination($args); 
-            ?>
-
-        </div>
         </div>
     </main>
 <?php get_footer(); ?>

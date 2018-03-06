@@ -40,12 +40,14 @@
                 <?php endwhile; ?>
                 <?php endif; ?>
                 
+<!--
                 <div class="load container">
                     <a href="#" class="button load__button">
                         <span class="load__text">Завантажити ще</span>
                         <i class="load__icon fa fa-refresh" aria-hidden="true"></i>
                     </a>
                 </div>
+-->
             </div>
         </div>
     </main>
