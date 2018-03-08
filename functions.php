@@ -207,6 +207,43 @@ function true_load_presentations(){
 	wp_die();
 }
 
+// AJAX LOAD PAGES
+
+add_action('wp_ajax_get_page', 'ajax_show_selected_page');
+add_action('wp_ajax_nopriv_get_page', 'ajax_show_selected_page');
+
+function ajax_show_selected_page() {
+    $link = !empty( $_POST['link'] ) ? esc_attr( $_POST['link'] ) : false;
+    $slug = $link ? wp_basename( $link ) : false;
+    $cat = get_category_by_slug( $slug );
+    
+    if( ! $cat ) {  
+        include 'load-index.php';
+        wp_die();
+    }
+    
+    query_posts( array(
+        'post_per_page' => get_option( 'post_per_page' ),
+        'post_status' => 'publish',
+        'category_name' => $cat->slug
+    ));
+    
+    if( $slug == 'cartoons' ) {
+        include 'load-cartoons.php';
+    }
+    if( $slug == 'presentations' ) {
+        include 'load-presentations.php';
+    }
+    if( $slug == 'exercises' ) {
+        include 'load-exercises.php';
+    }
+    if( $slug == 'trainings' ) {
+        include 'load-trainings.php';
+    }
+    
+    wp_die();
+}
+
 // ADD SCRIPTS
 
 add_action('wp_enqueue_scripts', 'my_assets');

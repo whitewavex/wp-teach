@@ -1,4 +1,5 @@
 <?php get_header(); ?>
+<main>
     <div class="publications">
         <div class="publications__container">
             <div class="container">
@@ -41,7 +42,7 @@
                     <div class="dot dots__item"></div>
                     <div class="dot dots__item"></div>
                 </div>
-                <main class="public">
+                <div class="public">
                     <h3 class="public__header public__header_rounded"><?php the_title(); ?></h3>
                     <div class="public__content">
                         <?php 
@@ -77,7 +78,7 @@
                         ?>
                         </p>
                     </div>
-                </main>
+                </div>
                 
                 <?php comments_template(); ?>
                 
@@ -87,4 +88,5 @@
             </div>
         </div>
     </div>
+</main>
 <?php get_footer(); ?>

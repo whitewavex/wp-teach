@@ -42,7 +42,7 @@
                         var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
                     </script>
                     <div id="load-cartoons" class="load container">
-                        <a href="#" class="button load__button">
+                        <a href="" class="button load__button">
                             <span class="load__text">Завантажити ще</span>
                             <i class="load__icon fa fa-refresh" aria-hidden="true"></i>
                         </a>

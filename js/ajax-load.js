@@ -1,100 +1,46 @@
 $(document).ready(function() {
     
-    // AJAX TRAININGS
-   
-    var container_main = $('.main');
+    // AJAX PAGES
     
-    $('.link-training').click(function(event) {
+    var page_container = $('main');
+    
+    $('.navigation__link').click( function(event) {
         event.preventDefault();
         
-        var link_post = $(this).attr('href');
+        var link_page = $(this).attr('href');
+        var title_cat = $(this).text();
         
-        ajax_training(link_post);
-    }); // end click
+        document.title = title_cat;
+        history.pushState({page_title: title_cat}, title_cat, link_page);
+        
+        ajax_page(link_page);
+    } );
     
-    function ajax_training(link_post) {
+    window.addEventListener('popstate', function(event) {
+       document.title = event.state.page_title;
+        ajax_page(location.href);
+    }, false);
+    
+    function ajax_page(link_page) {
         
-        container_main.animate({
+        page_container.animate({
             'opacity': 0
-        }, 300, post() );
+        }, 300, page() );
         
-        function post() {
+        function page() {
             
             var data = {
-                action: 'get_training',
-                link: link_post 
+                action: 'get_page',
+                link: link_page 
             };
             
             $.post( myAjax.ajaxurl, data, function(response) {
-                    container_main.html(response).animate({
+                    page_container.html(response).animate({
                         'opacity': 1
                     }, 300);
                 }
             ); // end $.post
         }
-        
-    } // end ajax_training
-    
-    // AJAX CARTOONS
-    
-    $('#load-cartoons').click(function(event) {
-        event.preventDefault();
-        
-        var icon = $(this).find('.load__icon');
-        
-        icon.addClass('fa-spin');
-        
-        var data = {
-			'action': 'load_cartoons',
-			'query': true_posts,
-			'page' : current_page
-		};
-        
-        $.post( myAjax.ajaxurl, data, function(response) {
-            
-            if( response ) { 
-				$('.load').before(response);
-				current_page++;
-				if (current_page == max_pages) $('.load').remove();
-            } 
-            else {
-					$('.load').remove();
-				}
-            
-            icon.removeClass('fa-spin');
-        }); // end post
-        
-    });
-    
-    // AJAX PRESENTATION
-    
-    $('#load-presentations').click(function(event) {
-        event.preventDefault();
-        
-        var icon = $(this).find('.load__icon');
-        
-        icon.addClass('fa-spin');
-        
-        var data = {
-			'action': 'load-presentations',
-			'query': true_posts,
-			'page' : current_page
-		};
-        
-        $.post( myAjax.ajaxurl, data, function(response) {
-            
-            if( response ) { 
-				$('.load').before(response);
-				current_page++;
-				if (current_page == max_pages) $('.load').remove();
-            } 
-            else {
-					$('.load').remove();
-				}
-            
-            icon.removeClass('fa-spin');
-        }); // end post
-        
-    });
+    }
     
 });
