@@ -1,5 +1,6 @@
 <?php get_header(); ?>
-    <main class="articles">
+<main>
+    <div class="articles">
         <div id="accordion" class="container">
             <h3 class="header articles__header"><?php single_cat_title(); ?></h3>
             <div class="dots">
@@ -35,5 +36,6 @@
             <?php endif; ?>
             
         </div>
-    </main>
+    </div>
+</main>
 <?php get_footer(); ?>

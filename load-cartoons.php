@@ -80,6 +80,7 @@
                         }); // end post
 
                     });
+                    
                 });
             </script>
         <?php endif; ?>

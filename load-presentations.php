@@ -41,39 +41,41 @@
                     <i class="load__icon fa fa-refresh" aria-hidden="true"></i>
                 </a>
             </div>
-            <script>
-        
-                // AJAX PRESENTATION
-    
-                $('#load-presentations').click(function(event) {
-                    event.preventDefault();
+            <script>  
+                $(document).ready(function() {
 
-                    var icon = $(this).find('.load__icon');
+                    // AJAX PRESENTATION
 
-                    icon.addClass('fa-spin');
+                    $('#load-presentations').click(function(event) {
+                        event.preventDefault();
 
-                    var data = {
-                        'action': 'load-presentations',
-                        'query': true_posts,
-                        'page' : current_page
-                    };
+                        var icon = $(this).find('.load__icon');
 
-                    $.post( myAjax.ajaxurl, data, function(response) {
+                        icon.addClass('fa-spin');
 
-                        if( response ) { 
-                            $('.load').before(response);
-                            current_page++;
-                            if (current_page == max_pages) $('.load').remove();
-                        } 
-                        else {
-                                $('.load').remove();
-                            }
+                        var data = {
+                            'action': 'load-presentations',
+                            'query': true_posts,
+                            'page' : current_page
+                        };
 
-                        icon.removeClass('fa-spin');
-                    }); // end post
+                        $.post( myAjax.ajaxurl, data, function(response) {
+
+                            if( response ) { 
+                                $('.load').before(response);
+                                current_page++;
+                                if (current_page == max_pages) $('.load').remove();
+                            } 
+                            else {
+                                    $('.load').remove();
+                                }
+
+                            icon.removeClass('fa-spin');
+                        }); // end post
+
+                    });
 
                 });
-            
             </script>
         <?php endif; ?>
         <?php endif; ?>

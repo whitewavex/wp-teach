@@ -1,4 +1,5 @@
 <?php get_header(); ?>
+<main>
     <div class="trainings">
         <div class="container">
             <h3 class="header trainings__header"><?php single_cat_title(); ?></h3>
@@ -11,7 +12,7 @@
             <div class="row">
                 <?php get_sidebar(); ?>
                 <div class="col-lg-8">
-                    <main class="main">
+                    <div class="main">
                         <?php $posts = new WP_Query( array(
                             'category_name' => 'trainings',
                             'post_type' => 'post',
@@ -95,9 +96,10 @@
                             </div>
                         </div>
 -->
-                    </main>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</main>
 <?php get_footer(); ?>

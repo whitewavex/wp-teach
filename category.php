@@ -2,7 +2,7 @@
     <main class="publications">
         <div class="publications__container">
             <div class="container">
-                <h3 class="header publications__header">Публікації</h3>
+                <h3 class="header publications__header"><?php single_cat_title(); ?></h3>
                 <div class="dots">
                     <div class="dot dots__item"></div>
                     <div class="dot dots__item"></div>
@@ -38,16 +38,21 @@
                 </div>
                 
                 <?php endwhile; ?>
+                <?php global $wp_query; ?>
+                <?php if (  $wp_query->max_num_pages > 1 ) : ?>
+                    <script>
+                        var true_posts = '<?php echo serialize($wp_query->query_vars); ?>';
+                        var current_posts = <?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>;
+                        var max_posts = '<?php echo $wp_query->max_num_pages; ?>';
+                    </script>
+                    <div id="load-posts" class="load container">
+                        <a href="" class="button load__button">
+                            <span class="load__text">Завантажити ще</span>
+                            <i class="load__icon fa fa-refresh" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 <?php endif; ?>
-                
-<!--
-                <div class="load container">
-                    <a href="#" class="button load__button">
-                        <span class="load__text">Завантажити ще</span>
-                        <i class="load__icon fa fa-refresh" aria-hidden="true"></i>
-                    </a>
-                </div>
--->
+                <?php endif; ?>
             </div>
         </div>
     </main>

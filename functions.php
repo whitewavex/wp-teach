@@ -84,10 +84,10 @@ function our_team() {
 
 // AJAX LOAD TRAININGS
 
-add_action('wp_ajax_get_training', 'ajax_show_selected_post');
-add_action('wp_ajax_nopriv_get_training', 'ajax_show_selected_post');
+add_action('wp_ajax_get_training', 'ajax_show_selected_training');
+add_action('wp_ajax_nopriv_get_training', 'ajax_show_selected_training');
 
-function ajax_show_selected_post() {
+function ajax_show_selected_training() {
     $link = !empty( $_POST['link'] ) ? esc_attr( $_POST['link'] ) : false;
     $post_ID = url_to_postid( $link );
     
@@ -99,15 +99,16 @@ function ajax_show_selected_post() {
         'p' => $post_ID
     ));
 ?>
-   
-    <?php while ( have_posts() ) : the_post(); ?>
-    <div class="lessons" id="<?php echo get_post_meta($post->ID, 'id', true); ?>">
-        <h4 class="lessons__header"><?php the_title(); ?></h4>
-        <div class="lessons__content">
-            <?php the_content(); ?>
-        </div>
+  
+<?php global $post; ?>
+<?php while ( have_posts() ) : the_post(); ?>
+<div class="lessons" id="<?php echo get_post_meta($post->ID, 'id', true); ?>">
+    <h4 class="lessons__header"><?php the_title(); ?></h4>
+    <div class="lessons__content">
+        <?php the_content(); ?>
     </div>
-    <?php endwhile; ?>
+</div>
+<?php endwhile; ?>
     
 <?php
     wp_die();
@@ -229,19 +230,286 @@ function ajax_show_selected_page() {
     ));
     
     if( $slug == 'cartoons' ) {
-        include 'load-cartoons.php';
+        require 'load-cartoons.php';
     }
     if( $slug == 'presentations' ) {
-        include 'load-presentations.php';
+        require 'load-presentations.php';
     }
     if( $slug == 'exercises' ) {
-        include 'load-exercises.php';
+        require 'load-exercises.php';
     }
     if( $slug == 'trainings' ) {
-        include 'load-trainings.php';
+        require 'load-trainings.php';
     }
     
     wp_die();
+}
+
+// AJAX LOAD POST
+
+add_action('wp_ajax_get_post', 'ajax_show_selected_post');
+add_action('wp_ajax_nopriv_get_post', 'ajax_show_selected_post');
+
+function ajax_show_selected_post() {
+    $link = !empty( $_POST['link'] ) ? esc_attr( $_POST['link'] ) : false;
+    $post_ID = url_to_postid( $link );
+    
+    if( ! $post_ID ) {
+        die( 'Запис не знайдено');
+    }
+    
+    query_posts( array(
+        'p' => $post_ID
+    ));
+?>
+   
+<div class="publications">
+        <div class="publications__container">
+            <div class="container">
+              
+                <?php global $post; ?>
+               
+                <?php if (have_posts()) :  while (have_posts()) : the_post(); ?>
+                
+                <?php 
+                    
+                    $categories = get_the_category();
+                    $previous_post = get_previous_post(); 
+                    $next_post = get_next_post();
+                    $video = get_post_meta($post->ID, 'video', true);
+                    $presentation = get_post_meta($post->ID, 'show', true);
+                
+                ?>
+                
+                <div class="row justify-content-between publications__arrows arrows">
+                    <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6 col-6 arrows__back">
+                        <?php
+                        
+                            if( $previous_post ) {
+                                echo '<a href="' . get_permalink( $previous_post ) . '" class="arrow"><i class="fa fa-arrow-left"></i><span class="arrows__text">попередній запис</span></a>';
+                            }
+                    
+                        ?>
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6 col-6 arrows__next">
+                        <?php
+                        
+                            if( $next_post ) {
+                                echo '<a href="' . get_permalink( $next_post ) . '" class="arrow"><span class="arrows__text">наступний запис</span><i class="fa fa-arrow-right"></i></a>';
+                            }
+                    
+                        ?>
+                    </div>
+                </div>
+                <div class="dots">
+                    <div class="dot dots__item"></div>
+                    <div class="dot dots__item"></div>
+                    <div class="dot dots__item"></div>
+                    <div class="dot dots__item"></div>
+                </div>
+                <div class="public">
+                    <h3 class="public__header public__header_rounded"><?php the_title(); ?></h3>
+                    <div class="public__content">
+                        <?php 
+                        
+                            if( $video ) {
+                                echo '<iframe class="public__video" src="' . $video . '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+                            }
+                        
+                            if( $presentation ) {
+                                echo '<a target="_blank" href="' . $presentation . '">Перейти до перегляду презентації</a><hr>';
+                            }
+                        
+                        ?>
+                        <?php the_content(); ?>
+                    </div>
+                    <div class=" public__footer">
+                        <div class="date public__date">
+                            <i class="fa fa-calendar-check-o"></i>
+                            <span><?php the_date(); ?></span>
+                        </div>
+                        <p class="public__category">Категорія: 
+                        <?php 
+                            foreach( $categories as $category ){ 
+                                if( $category->category_description != '' ) {
+                                    continue;
+                                } 
+                                else {
+                                    $cat_name = $category->cat_name;
+                                    $cat_link = get_category_link( $category->cat_ID );
+                                    echo '<a class="public__link" href="' . $cat_link . '">' . $cat_name . '</a>'; 
+                                }
+                            }
+                        ?>
+                        </p>
+                    </div>
+                </div>
+                
+                <?php comments_template(); ?>
+                
+                <?php endwhile; ?>
+                <?php endif; ?>
+                
+            </div>
+        </div>
+    </div>
+    <script>
+
+    // AJAX SINGLE
+    
+    var single_container = $('main');
+    
+    $('.arrow').click( function(event) {
+        event.preventDefault();
+        
+        var link_post = $(this).attr('href');
+        
+        ajax_post(link_post);
+    }); // end click
+    
+    function ajax_post(link_post) {
+        
+        single_container.animate({
+            'opacity': 0 
+        }, 300, post() );
+        
+        function post() {
+            
+            var data = {
+                action: 'get_post',
+                link: link_post
+            };
+            
+            $.post( myAjax.ajaxurl, data, function(response) {
+                single_container.html(response).animate({
+                    'opacity': 1
+                }, 300);
+            }); // end post
+        }
+    } 
+    
+    </script>
+    
+<?php
+    wp_die();
+}
+
+// AJAX LOAD SEARCH
+
+add_action('wp_ajax_load_search', 'true_load_search');
+add_action('wp_ajax_nopriv_load_search', 'true_load_search');
+
+function true_load_search(){
+    
+    global $post;
+ 
+	$args = explode( stripslashes( $_POST['query'] ) );
+	$args['paged'] = $_POST['page'] + 1;
+	$args['post_status'] = 'publish';
+ 
+	query_posts( $args );
+
+    ?>
+    <div class="container">
+        <?php while (have_posts()) : the_post(); ?>
+        <?php $categories = get_the_category(); ?>
+            <div class="public">
+                <h4 class="public__header public__header_rounded"><?php the_title(); ?></h4>
+                <div class="public__content">
+                   <?php the_post_thumbnail(); ?>
+                   <?php the_content(''); ?>
+                </div>
+                <a href="<?php the_permalink(); ?>" class="button public__button">Прочитати</a>
+                <p class="public__category"> 
+                <?php 
+                    foreach( $categories as $category ){ 
+                        if( $category->category_description != '' ) {
+                            continue;
+                        } 
+                        else {
+                            $cat_name = $category->cat_name;
+                            $cat_link = get_category_link( $category->cat_ID );
+                            echo 'Категорія: <a class="public__link" href="' . $cat_link . '">' . $cat_name . '</a>'; 
+                        }
+                    }
+                ?>
+                </p>
+            </div>
+            <?php endwhile; ?>
+            </div>
+            <?php global $wp_query; ?>
+            <?php if (  $wp_query->max_num_pages > 1 ) : ?>
+                <script>
+                    var true_search = '<?php echo implode($wp_query->query_vars); ?>';
+                    var current_search = <?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>;
+                    var max_search = '<?php echo $wp_query->max_num_pages; ?>';
+                    if (current_search == max_search) $('.load').remove();
+                </script>
+        <?php endif; ?>
+    </div>
+        
+    <?php
+    
+	wp_die();
+}
+
+// AJAX LOAD POSTS
+
+add_action('wp_ajax_load_posts', 'true_load_posts');
+add_action('wp_ajax_nopriv_load_posts', 'true_load_posts');
+
+function true_load_posts(){
+    
+    global $post;
+ 
+	$args = unserialize( stripslashes( $_POST['query'] ) );
+	$args['paged'] = $_POST['page'] + 1;
+	$args['post_status'] = 'publish';
+ 
+	query_posts( $args );
+
+    ?>
+    <div class="container">
+        <?php while (have_posts()) : the_post(); ?>
+        <?php $categories = get_the_category(); ?>
+            <div class="public">
+                <h4 class="public__header public__header_rounded"><?php the_title(); ?></h4>
+                <div class="public__content">
+                   <?php the_post_thumbnail(); ?>
+                   <?php the_content(''); ?>
+                </div>
+                <a href="<?php the_permalink(); ?>" class="button public__button">Прочитати</a>
+                <p class="public__category"> 
+                <?php 
+                    foreach( $categories as $category ){ 
+                        if( $category->category_description != '' ) {
+                            continue;
+                        } 
+                        else {
+                            $cat_name = $category->cat_name;
+                            $cat_link = get_category_link( $category->cat_ID );
+                            echo 'Категорія: <a class="public__link" href="' . $cat_link . '">' . $cat_name . '</a>'; 
+                        }
+                    }
+                ?>
+                </p>
+            </div>
+            <?php endwhile; ?>
+            </div>
+            <?php global $wp_query; ?>
+            <?php if (  $wp_query->max_num_pages > 1 ) : ?>
+                <script>
+                    var true_search = '<?php echo implode($wp_query->query_vars); ?>';
+                    var current_search = <?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>;
+                    var max_search = '<?php echo $wp_query->max_num_pages; ?>';
+                    if (current_search == max_search) $('.load').remove();
+                </script>
+        <?php endif; ?>
+    </div>
+        
+    <?php
+    
+	wp_die();
 }
 
 // ADD SCRIPTS
