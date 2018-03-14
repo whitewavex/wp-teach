@@ -419,7 +419,7 @@ function true_load_search(){
                    <?php the_post_thumbnail(); ?>
                    <?php the_content(''); ?>
                 </div>
-                <a href="<?php the_permalink(); ?>" class="button public__button">Прочитати</a>
+                <a href="<?php the_permalink(); ?>" class="button public__button">Переглянути</a>
                 <p class="public__category"> 
                 <?php 
                     foreach( $categories as $category ){ 
