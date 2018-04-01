@@ -5,7 +5,7 @@
                     <img src="<?php bloginfo(template_url) ?>/images/logo.png" alt="" class="logo">
                 </div>
                 <div class="col-md-10 col-sm-9 col-9 copyright">
-                    <p class="copyright__text"><i class="fa fa-copyright copyright__img" aria-hidden="true"></i> Сайт для вчителів і батьків молодших школярів. Усі права захищено. 2014 - 2018.</p>
+                    <p class="copyright__text"><i class="fa fa-copyright copyright__img" aria-hidden="true"></i> Сайт для вчителів і батьків молодших школярів. Усі права захищено. 2014 - <?php echo date('Y'); ?>.</p>
                 </div>
             </div>
         </div>

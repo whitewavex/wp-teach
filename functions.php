@@ -281,12 +281,16 @@ function ajax_show_selected_post() {
                 
                 ?>
                 
+                <script>
+                    var title_next_post = '<?php echo $next_post->post_title ?>';
+                    var title_previous_post = '<?php echo $previous_post->post_title; ?>';
+                </script>
                 <div class="row justify-content-between publications__arrows arrows">
                     <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6 col-6 arrows__back">
                         <?php
                         
                             if( $previous_post ) {
-                                echo '<a href="' . get_permalink( $previous_post ) . '" class="arrow"><i class="fa fa-arrow-left"></i><span class="arrows__text">попередній запис</span></a>';
+                                echo '<a href="' . get_permalink( $previous_post ) . '" id="previous_post" class="arrow"><i class="fa fa-arrow-left"></i><span class="arrows__text">попередній запис</span></a>';
                             }
                     
                         ?>
@@ -295,7 +299,7 @@ function ajax_show_selected_post() {
                         <?php
                         
                             if( $next_post ) {
-                                echo '<a href="' . get_permalink( $next_post ) . '" class="arrow"><span class="arrows__text">наступний запис</span><i class="fa fa-arrow-right"></i></a>';
+                                echo '<a href="' . get_permalink( $next_post ) . '" id="next_post" class="arrow"><span class="arrows__text">наступний запис</span><i class="fa fa-arrow-right"></i></a>';
                             }
                     
                         ?>
@@ -363,9 +367,25 @@ function ajax_show_selected_post() {
         event.preventDefault();
         
         var link_post = $(this).attr('href');
+        var title_post;
+        
+        if( $(this).attr('id') == 'next_post' ) {
+            title_post = title_next_post;
+        }
+        if( $(this).attr('id') == 'previous_post' ) {
+            title_post = title_previous_post;
+        }
+        
+        document.title = title_post;
+        history.pushState({page_title: title_post}, title_post, link_post);
         
         ajax_post(link_post);
     }); // end click
+    
+    window.addEventListener('popstate', function(event) {
+       document.title = event.state.page_title;
+        ajax_page(location.href);
+    }, false);
     
     function ajax_post(link_post) {
         

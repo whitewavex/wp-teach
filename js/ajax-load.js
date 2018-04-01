@@ -148,9 +148,25 @@ $(document).ready(function() {
         event.preventDefault();
         
         var link_post = $(this).attr('href');
+        var title_post;
+        
+        if( $(this).attr('id') == 'next_post' ) {
+            title_post = title_next_post;
+        }
+        if( $(this).attr('id') == 'previous_post' ) {
+            title_post = title_previous_post;
+        }
+        
+        document.title = title_post;
+        history.pushState({page_title: title_post}, title_post, link_post);
         
         ajax_post(link_post);
     }); // end click
+    
+    window.addEventListener('popstate', function(event) {
+       document.title = event.state.page_title;
+        ajax_page(location.href);
+    }, false);
     
     function ajax_post(link_post) {
         
