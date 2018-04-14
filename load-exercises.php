@@ -10,7 +10,14 @@
 
         <?php global $post; ?>
 
-        <?php if (have_posts()) :  while (have_posts()) : the_post(); ?>
+        <?php $posts = new WP_Query( array(
+            'category_name' => 'exercises',
+            'post_type' => 'post',
+            'posts_per_page' => -1,
+            'order' => 'ASC'
+        )); ?>
+
+        <?php if ($posts->have_posts()) :  while ($posts->have_posts()) : $posts->the_post(); ?>
 
         <?php 
             global $more;

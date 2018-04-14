@@ -6,6 +6,7 @@
                             <?php $posts = new WP_Query( array(
                                 'category_name' => 'trainings',
                                 'post_type' => 'post',
+                                'posts_per_page' => -1,
                                 'order' => 'ASC'
                             )); ?>
                             <?php if ( $posts->have_posts() ) :  while ( $posts->have_posts() ) : $posts->the_post(); ?>
