@@ -18,7 +18,7 @@
                         <a href="#" class="nav-line nav-mobile__nav-line middle"></a>
                         <a href="#" class="nav-line nav-mobile__nav-line bottom"></a>
                     </div>
-                    <form class="search float-right">
+                    <form class="search float-right" role="search" method="get" id="searchform" action="<?php echo esc_url( home_url( '/' ) )  ?>">
                         <input name="s" class="search__text" type="search" value="Пошук..." onFocus="if(this.value=='Пошук...')this.value=''" onBlur="if(this.value=='')this.value='Пошук...'">
                         <button class="search__btn">
                             <i class="fa fa-search" aria-hidden="true"></i>
