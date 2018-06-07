@@ -22,9 +22,7 @@
                         <?php else: ?>
                             <img src="<?php bloginfo('template_url');?>/images/no_image.jpg" alt="Вітаємо!"/>
                         <?php endif; ?>
-                        <div class="info__content float-md-left">
                             <?php the_content(); ?>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
                 <div class="col-lg-4">
                     <div class="sidebar">
                         <div class="widget">
-                            <h4 class="widget__header">Мандрівка країною здоров’я</h4>
+                            <h4 class="widget__header">Весела подорож</h4>
                             <ul class="widget__list">
                             <?php $posts = new WP_Query( array(
                                 'category_name' => 'trainings',

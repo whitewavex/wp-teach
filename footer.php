@@ -1,4 +1,4 @@
-<footer class="footer">
+    <footer class="footer">
         <div class="container">
             <div class="d-flex flex-row align-items-center">
                 <div class="col-md-2 col-sm-3 col-3">
@@ -9,6 +9,14 @@
                 </div>
             </div>
         </div>
+        <?php $options = get_option('write_us_options'); ?>
+        <a href="" class="feedback">Напишіть нам</a>
+        <div id="modal-form" class="modal-form">
+            <i class="fa fa-times modal-form__close" aria-hidden="true"></i>
+            <h3 class="modal-form__header"><?php echo $options['option_title'] ?></h3>
+            <?php echo do_shortcode($options['option_form']) ?>
+        </div>
+        <div class="modal-bg"></div>
     </footer>
     <script src="<?php bloginfo(template_url) ?>/libs/jquery.min.js"></script>
     <script src="<?php bloginfo(template_url) ?>/libs/bootstrap.min.js"></script>

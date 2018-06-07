@@ -24,10 +24,15 @@
                             <a data-fancybox data-src="#<?php echo get_post_meta($post->ID, 'id', true); ?>" href="javascript:;" class="button button_info post__button">Психолого-педагогічний ефект</a>
                             <a data-fancybox data-type="iframe" data-src="<?php echo get_post_meta($post->ID, 'video', true); ?>" href="javascript:;" class="button button_play post__button">Перейти до перегляду</a>
                             <a href="<?php echo get_post_meta($post->ID, 'download', true); ?>" class="button post__button">Завантажити</a>
+                            <a data-fancybox data-src="#<?php echo get_post_meta($post->ID, 'id', true); ?>_2" href="javascript:;" class="button button_questions post__button">Запитання</a>
                         </div>
                         <div class="content" style="display: none;" id="<?php echo get_post_meta($post->ID, 'id', true); ?>">
                             <h3><?php the_title(); ?></h3>
                             <?php the_content(); ?>
+                        </div>
+                        <div class="content" style="display: none;" id="<?php echo get_post_meta($post->ID, 'id', true); ?>_2">
+                            <h3>Запитання для обговорення</h3>
+                            <?php echo get_post_meta($post->ID, 'questions', true); ?>
                         </div>
                     </div>
                 </div>

@@ -584,4 +584,44 @@ function my_assets() {
         </div>
   <?php }
 
+// WRITE US
+
+add_action( 'admin_menu', 'create_write_us' );
+
+function create_write_us() {
+    add_menu_page( 'Напишіть нам', 'Напишіть нам',
+    'manage_options', 'write_us_menu', 'write_us_settings_page',
+    'dashicons-admin-comments', 28 );
+    
+    add_action( 'admin_init', 'write_us_register_settings' );
+}
+
+function write_us_register_settings() {
+    register_setting( 'write-us-settings-group', 'write_us_options', 'write_us_sanitize_options' );
+}
+
+function write_us_settings_page() {
 ?>
+<div class="wrap">
+<h2 style="margin-bottom: 20px;">Форма зворотнього зв'язку</h2>
+<form method="post" action="options.php">
+<?php settings_fields( 'write-us-settings-group' ); ?>
+<?php $write_us_options = get_option( 'write_us_options' ); ?>
+<form action="">
+    <p>Пояснювальний текст форми</p>
+    <input type="text" size="100%" name="write_us_options[option_title]" value="<?php echo esc_attr( $write_us_options['option_title'] ); ?>">
+    <p>Вставте шорткод форми</p>
+    <input type="text" size="100%" name="write_us_options[option_form]" value="<?php echo esc_attr( $write_us_options['option_form'] ); ?>">
+    <p class="submit">
+        <input type="submit" class="button-primary" value="Зберегти зміни" />
+    </p>
+</form>
+</div>
+<?php
+}
+
+function write_us_sanitize_options( $input ) {
+    $input['option_title'] = sanitize_text_field( $input['option_title'] );
+//    $input['option_form'] = sanitize_text_field( $input['option_form'] );
+    return $input;
+}
